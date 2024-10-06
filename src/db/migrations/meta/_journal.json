@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1728140022548,
+      "tag": "0000_sloppy_hellfire_club",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1728204319413,
+      "tag": "0001_fantastic_mindworm",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1728204404708,
+      "tag": "0002_natural_sage",
+      "breakpoints": true
+    }
+  ]
+}
