@@ -1,5 +1,5 @@
 {
-  "id": "a42facca-1439-4279-bc4a-1c819a66c0c5",
+  "id": "57f0e0e4-cf99-454f-9914-ed6e90ffa40e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -33,6 +33,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "status": {
           "name": "status",
           "type": "status",
@@ -53,8 +59,8 @@
       "schema": "public",
       "values": [
         "open",
-        "void",
         "paid",
+        "void",
         "uncollectible"
       ]
     }

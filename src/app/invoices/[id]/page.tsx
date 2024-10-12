@@ -3,8 +3,17 @@ import { InvoiceStatusBadge } from "@/components/invoice-status-badge";
 import { db } from "@/db";
 import { Invoices } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { AVAILABLE_STATUSES } from "@/data/invoices";
+import { updateInvoiceAction } from "@/app/action";
 
 export default async function InvoicePage({
   params,
@@ -14,6 +23,10 @@ export default async function InvoicePage({
   const invoiceId = parseInt(params.id);
   const { userId } = auth();
 
+  if (!userId) {
+    return;
+  }
+
   if (isNaN(invoiceId)) {
     throw new Error("Invalid invoice id");
   }
@@ -21,7 +34,7 @@ export default async function InvoicePage({
   const [invoice] = await db
     .select()
     .from(Invoices)
-    .where(eq(Invoices.id, invoiceId))
+    .where(and(eq(Invoices.id, invoiceId), eq(Invoices.userId, userId)))
     .limit(1);
 
   if (!invoice) {
@@ -36,6 +49,22 @@ export default async function InvoicePage({
             Invoice {invoiceId}
             <InvoiceStatusBadge status={invoice.status} />
           </h1>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Change Status</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {AVAILABLE_STATUSES.map((status) => (
+                <DropdownMenuItem key={status.id}>
+                  <form action={updateInvoiceAction}>
+                    <input type="hidden" name="id" value={invoiceId} />
+                    <input type="hidden" name="status" value={status.id} />
+                    <button>{status.label}</button>
+                  </form>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <p className="text-3xl mb-3">$ {(invoice.value / 100).toFixed(2)}</p>
         <p className="text-lg mb-8"></p>

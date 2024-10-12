@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "public"."status" AS ENUM('open', 'void', 'paid', 'uncollectible');
+ CREATE TYPE "public"."status" AS ENUM('open', 'paid', 'void', 'uncollectible');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS "invoices" (
 	"createTs" timestamp DEFAULT now() NOT NULL,
 	"value" integer NOT NULL,
 	"description" text NOT NULL,
+	"userId" text NOT NULL,
 	"status" "status" NOT NULL
 );
